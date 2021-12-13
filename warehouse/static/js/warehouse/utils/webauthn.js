@@ -91,11 +91,13 @@ const transformAssertion = (assertion) => {
 
   return {
     id: assertion.id,
-    rawId: webAuthnBtoA(rawId),
+    rawId: webAuthnBtoA(String.fromCharCode(...rawId)),
+    response: {
+      authenticatorData: webAuthnBtoA(String.fromCharCode(...authData)),
+      clientDataJSON: webAuthnBtoA(String.fromCharCode(...clientDataJSON)),
+      signature: webAuthnBtoA(String.fromCharCode(...sig)),
+    },
     type: assertion.type,
-    authData: webAuthnBtoA(String.fromCharCode(...authData)),
-    clientData: webAuthnBtoA(String.fromCharCode(...clientDataJSON)),
-    signature: hexEncode(sig),
     assertionClientExtensions: JSON.stringify(assertionClientExtensions),
   };
 };
@@ -118,10 +120,12 @@ const transformCredential = (credential) => {
 
   return {
     id: credential.id,
-    rawId: webAuthnBtoA(rawId),
+    rawId: webAuthnBtoA(String.fromCharCode(...rawId)),
     type: credential.type,
-    attObj: webAuthnBtoA(String.fromCharCode(...attObj)),
-    clientData: webAuthnBtoA(String.fromCharCode(...clientDataJSON)),
+    response: {
+        attestationObject: webAuthnBtoA(String.fromCharCode(...attObj)),
+        clientDataJSON: webAuthnBtoA(String.fromCharCode(...clientDataJSON)),
+    },
     registrationClientExtensions: JSON.stringify(registrationClientExtensions),
   };
 };
